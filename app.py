@@ -7,8 +7,11 @@ import numpy as np
 from flask_cors import CORS 
 from xgboost import XGBRegressor # Needed to load the XGBoost model type
 
+# app.py (Modified)
+from flask import Flask, request, jsonify
+# ... other imports ...
+
 # --- 1. Load Model and Features ---
-# Paths are relative to app.py inside MOV_PROJECT
 MODEL_PATH = 'deployment_assets/movie_predictor_model.pkl'
 FEATURES_PATH = 'deployment_assets/feature_list.json'
 
@@ -17,7 +20,15 @@ try:
     MODEL = joblib.load(MODEL_PATH)
     with open(FEATURES_PATH, 'r') as f:
         FEATURE_LIST = json.load(f)['features']
+    
+    # --- CRITICAL NEW LINE: Log the loaded feature list ---
+    print(f"[INIT DEBUG] Feature List Loaded from JSON ({len(FEATURE_LIST)}): {FEATURE_LIST}")
+    
+    # --- CRITICAL NEW LINE: Log the model's expected features ---
+    print(f"[INIT DEBUG] Model Expected Features ({len(MODEL.feature_names_in_)}): {MODEL.feature_names_in_}")
+    
     print("[INIT] Model and features loaded successfully.")
+    
 except Exception as e:
     print(f"[FATAL ERROR] Failed to load model files: {e}")
     exit()
