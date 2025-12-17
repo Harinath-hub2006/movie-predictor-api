@@ -170,52 +170,6 @@ y_pred_simple_log = M_simple.predict(X_test_simple)
 rmse_simple = np.sqrt(mean_squared_error(np.expm1(y_test_simple), np.expm1(y_pred_simple_log)))
 print(f"Simplified Model RMSE (Top {TOP_N} Features): ${rmse_simple:,.2f}")
 
-# =========================================================
-# === STEP 16: CUSTOM PREDICTION WITH SIMPLIFIED FEATURES ===
-# =========================================================
-
-# 1. DEFINE YOUR HYPOTHETICAL MOVIE'S DATA using ONLY the Top N features.
-# You must look at the 'top_20_features' list printed above!
-
-# Example Top Features (these are hypothetical, use your script's output):
-# ['budget', 'popularity', 'vote_count', 'runtime', 'vote_average', 'Genre_Action', 'language_en', ...]
-
-hypothetical_input = {
-    # Numerical Features (Must match your top feature list):
-    'budget': 180000000.0,
-    'popularity': 65.0,
-    'vote_count': 2500.0,
-    'runtime': 130.0,
-    'vote_average': 8.0,
-    
-    # One-Hot Encoded Features (Set to 1 or 0):
-    'Genre_Action': 1.0,  # Is it an action movie? (1=Yes)
-    'language_en': 1.0,   # Is it in English? (1=Yes)
-    # Set all other Top 20 features to 0.0 or their defined value
-    
-    # Add the remaining 12 features from your actual TOP_N list here...
-}
-
-# 2. CREATE A DATAFRAME for the new movie using ONLY the Top N columns
-X_predict_simple = pd.DataFrame(0, index=[0], columns=top_20_features) 
-
-# Update the defined features for the hypothetical movie
-for feature, value in hypothetical_input.items():
-    if feature in X_predict_simple.columns:
-        X_predict_simple.loc[0, feature] = value
-    else:
-        # Note: If you defined features outside the Top 20, they are ignored here.
-        pass
-
-# 3. RUN THE PREDICTION using the SIMPLIFIED model (M_simple)
-predicted_revenue_log_simple = M_simple.predict(X_predict_simple)
-predicted_revenue_actual_simple = np.expm1(predicted_revenue_log_simple)
-
-# 4. DISPLAY THE RESULT
-print("\n--- Simplified Custom Prediction ---")
-print(f"Features Used for Input: {len(X_predict_simple.columns)}")
-print(f"Predicted Revenue: ${predicted_revenue_actual_simple[0]:,.2f}")
-
 # --- 1. Extract and Plot Feature Importance for Top 20 ---
 importances = M_simple.feature_importances_
 feature_names = X_simplified.columns # Use the columns from the simplified X
@@ -342,7 +296,14 @@ your_custom_movie = {
     'Genre_Crime': 1.0,
     'Keyword_woman director': 0.0, # It DOES have a woman director (from the top 20 list)
     'Keyword_eroticism': 0.0,
-    # The rest of the Top 20 features (like Keyword_berlin, Keyword_venice, etc.) will be 0.0
+    'Keyword_Comedy': 0.0,
+    'Keyword_suspense': 0.0,
+    'Keyword_mannequin': 0.0,
+    'Keyword_venice': 1.0,
+    'Keyword_arbitary law': 0.0,
+    'keyword_partner': 0.0,
+    'Keyword_berlin': 0.0,
+    'Keyword_key:': 0.0
 }
 
 
