@@ -144,10 +144,18 @@ feature_names = X.columns
 feature_series = pd.Series(importances, index=feature_names).sort_values(ascending=False)
 
 # 2. Select the top N features (e.g., Top 20)
+# --- NEW FIXED VERSION ---
 TOP_N = 20
-top_20_features = feature_series.head(TOP_N).index.tolist()
+# We manually define exactly what we want to match Wix
+top_20_features = [
+    'vote_count', 'budget', 'release_year', 'vote_average', 'Keyword_comedy', 
+    'popularity', 'runtime', 'Keyword_berlin', 'Keyword_eroticism', 
+    'release_month', 'Keyword_key', 'Keyword_venice', 'Genre_Science Fiction', 
+    'Genre_Comedy', 'Keyword_suspense', 'Keyword_woman director', 'Genre_Crime', 
+    'Keyword_mannequin', 'Keyword_arbitrary law', 'Keyword_partner'
+]
 
-print(f"\n--- Top {TOP_N} Predictive Features ---")
+print(f"\n--- Top {TOP_N} Predictive Features (FORCED) ---")
 print(top_20_features)
 print(f"Combined Importance of Top {TOP_N}: {feature_series.head(TOP_N).sum():.4f}")
 
